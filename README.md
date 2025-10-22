@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# app-bd
 
-## Getting Started
+Projeto Next.js com Prisma (SQLite) para cadastro de usuários.
 
-First, run the development server:
+## Requisitos
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js 18+
+- npm ou pnpm
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Configuração
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Variáveis de ambiente
+   - Arquivo `.env` já contém uma base SQLite local:
+     - `DATABASE_URL="file:./dev.db"`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. Instalar dependências
+   - `npm install`
 
-## Learn More
+3. Banco de dados
+   - Gerar/atualizar Prisma Client e aplicar migrações (opcional, se desejar versionar o schema):
+     - `npx prisma generate`
+     - `npx prisma migrate dev --name init`
 
-To learn more about Next.js, take a look at the following resources:
+4. Rodar em desenvolvimento
+   - `npm run dev`
+   - Acesse `http://localhost:3000`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+5. Build de produção
+   - `npm run build`
+   - `npm start`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Estrutura relevante
 
-## Deploy on Vercel
+- API (CRUD Usuário):
+  - `src/app/api/usuarios/route.ts` (GET lista, POST cria)
+  - `src/app/api/usuarios/[id]/route.ts` (PATCH atualiza)
+  - `src/app/api/usuarios/[id]/toggle/route.ts` (POST alterna ativo)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Prisma Client:
+  - `src/lib/prisma.ts` (singleton para evitar múltiplas instâncias)
+  - Schema: `prisma/schema.prisma`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Páginas:
+  - Home: `src/app/page.tsx`
+  - Usuários: `src/app/(interna)/usuarios/page.tsx`
+
+- Componentes:
+  - Layout/Menu: `src/app/components/templates/Pagina.tsx`, `src/app/components/templates/Menu.tsx`
+  - Formulário: `src/app/components/templates/usuario/FormularioUsuario.tsx`
+
+## Fluxo de Uso (Usuários)
+
+1. Acesse `/usuarios`.
+2. Preencha Nome, Email e Senha e clique em Salvar para criar.
+3. A lista abaixo exibe os usuários com status (Ativo/Inativo).
+4. Ações na lista:
+   - "Editar": carrega o usuário no formulário para alteração; salve para aplicar.
+   - "Ativar/Desativar": alterna o estado do usuário.
+
+## Notas
+
+- Senha está sendo salva em texto puro (somente para fins de exemplo). Em produção, utilize hashing (ex.: bcrypt) e políticas de segurança.
+- O ESLint ignora a pasta `src/generated/` para evitar alertas em código gerado do Prisma.
+
