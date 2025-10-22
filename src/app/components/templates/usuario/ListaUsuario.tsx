@@ -1,10 +1,13 @@
 'use client'
-import usuarios from '../../../data/constants/usuarios'
 import LinhaUsuario from './LinhaUsuario'
 import { Usuario } from '@/core/model/Usuario'
 import { motion } from 'framer-motion'
 
-export default function ListaUsuario() {
+interface ListaUsuarioProps {
+    usuarios: Usuario[]
+}
+
+export default function ListaUsuario({ usuarios }: ListaUsuarioProps) {
     return (
         <motion.div 
             initial={{ opacity: 0 }}

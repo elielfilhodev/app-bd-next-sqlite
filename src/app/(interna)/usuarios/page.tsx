@@ -94,48 +94,54 @@ export default function Page() {
                     </motion.div>
                 )}
 
-                <AnimatePresence>
-                    {!carregando && lista.map((u, index) => (
-                        <motion.div
-                            key={u.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -20, scale: 0.95 }}
-                            transition={{ duration: 0.4, delay: index * 0.1 }}
-                            whileHover={{ scale: 1.02, y: -2 }}
-                            className="flex items-center justify-between p-4 bg-zinc-900 hover:bg-zinc-800 rounded-md transition-all duration-200"
-                        >
-                            <div className="flex flex-col">
-                                <span className="text-xl font-black text-white">{u.nome}</span>
-                                <span className="text-sm text-zinc-400">{u.email}</span>
-                                <motion.span 
-                                    className={`text-xs ${u.ativo ? 'text-green-400' : 'text-red-400'}`}
-                                    animate={{ scale: u.ativo ? 1 : 0.9 }}
-                                >
-                                    {u.ativo ? 'Ativo' : 'Inativo'}
-                                </motion.span>
-                            </div>
-                            <div className="flex gap-2">
-                                <motion.button 
-                                    whileHover={{ scale: 1.05, y: -1 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    className="bg-zinc-700 hover:bg-zinc-600 px-3 py-1 rounded-md cursor-pointer transition-colors duration-200" 
-                                    onClick={() => setSelecionado(u)}
-                                >
-                                    Editar
-                                </motion.button>
-                                <motion.button 
-                                    whileHover={{ scale: 1.05, y: -1 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded-md cursor-pointer transition-colors duration-200" 
-                                    onClick={() => excluir(u.id)}
-                                >
-                                    Excluir
-                                </motion.button>
-                            </div>
-                        </motion.div>
-                    ))}
-                </AnimatePresence>
+                {!carregando && lista.length > 0 && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.6 }}
+                    >
+                        {lista.map((u, index) => (
+                            <motion.div
+                                key={u.id}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                                transition={{ duration: 0.4, delay: index * 0.1 }}
+                                whileHover={{ scale: 1.02, y: -2 }}
+                                className="flex items-center justify-between p-4 bg-zinc-900 hover:bg-zinc-800 rounded-md transition-all duration-200 mb-4"
+                            >
+                                <div className="flex flex-col">
+                                    <span className="text-xl font-black text-white">{u.nome}</span>
+                                    <span className="text-sm text-zinc-400">{u.email}</span>
+                                    <motion.span 
+                                        className={`text-xs ${u.ativo ? 'text-green-400' : 'text-red-400'}`}
+                                        animate={{ scale: u.ativo ? 1 : 0.9 }}
+                                    >
+                                        {u.ativo ? 'Ativo' : 'Inativo'}
+                                    </motion.span>
+                                </div>
+                                <div className="flex gap-2">
+                                    <motion.button 
+                                        whileHover={{ scale: 1.05, y: -1 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        className="bg-zinc-700 hover:bg-zinc-600 px-3 py-1 rounded-md cursor-pointer transition-colors duration-200" 
+                                        onClick={() => setSelecionado(u)}
+                                    >
+                                        Editar
+                                    </motion.button>
+                                    <motion.button 
+                                        whileHover={{ scale: 1.05, y: -1 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded-md cursor-pointer transition-colors duration-200" 
+                                        onClick={() => excluir(u.id)}
+                                    >
+                                        Excluir
+                                    </motion.button>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </motion.div>
+                )}
             </motion.div>
         </Pagina>
     )
